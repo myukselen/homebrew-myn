@@ -115,6 +115,7 @@ class PythonAT36 < Formula
       s.gsub! "sqlite_setup_debug = False", "sqlite_setup_debug = True"
       s.gsub! "for d_ in inc_dirs + sqlite_inc_paths:",
               "for d_ in ['#{Formula["sqlite"].opt_include}']:"
+      s.gsub! "/usr/local/ssl", Formula["openssl"].opt_prefix
     end
 
     # Allow python modules to use ctypes.find_library to find homebrew's stuff
@@ -235,19 +236,20 @@ class PythonAT36 < Formula
     end
 
     rm_rf [bin/"pip", bin/"easy_install"]
-    mv bin/"wheel", bin/"wheel3"
+    mv bin/"wheel", bin/"wheel3.6"
 
     # Install unversioned symlinks in libexec/bin.
-    {
-      "easy_install" => "easy_install-#{xy}",
-      "pip"          => "pip3",
-      "wheel"        => "wheel3",
-    }.each do |unversioned_name, versioned_name|
-      (libexec/"bin").install_symlink (bin/versioned_name).realpath => unversioned_name
-    end
+    #{
+    #  "easy_install" => "easy_install-#{xy}",
+    #  "pip"          => "pip3",
+    #  "wheel"        => "wheel3",
+    #}.each do |unversioned_name, versioned_name|
+    #  (libexec/"bin").install_symlink (bin/versioned_name).realpath => unversioned_name
+    #end
 
     # post_install happens after link
-    %W[pip3 pip#{xy} easy_install-#{xy} wheel3].each do |e|
+    #%W[pip3 pip#{xy} easy_install-#{xy} wheel3].each do |e|
+    %W[pip#{xy} easy_install-#{xy}].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
@@ -322,14 +324,14 @@ class PythonAT36 < Formula
         #{HOMEBREW_PREFIX}/bin/python3.6
 
       Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to
-      `python3.6`, `python3.6-config`, `pip3` etc., respectively, have been installed into
-        #{opt_libexec}/bin
+      `python3.6`, `python3.6-config`, `pip3` etc., respectively, have not been installed into
+        #{opt_libexec}/bin . Remember we don't want to mess with original python formula.
 
       If you need Homebrew's Python 2.7 run
         brew install python@2
 
       You can install Python packages with
-        pip3 install <package>
+        pip3.6 install <package>
       They will install into the site-package directory
         #{HOMEBREW_PREFIX/"lib/python#{xy}/site-packages"}
 
@@ -346,6 +348,6 @@ class PythonAT36 < Formula
     system "#{bin}/python#{xy}", "-c", "import tkinter; root = tkinter.Tk()"
     system "#{bin}/python#{xy}", "-c", "import _gdbm"
     system "#{bin}/python#{xy}", "-c", "import zlib"
-    system bin/"pip3", "list", "--format=columns"
+    system bin/"pip3.6", "list", "--format=columns"
   end
 end
