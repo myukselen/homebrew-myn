@@ -35,7 +35,7 @@ Now you have old one (tensorflow-gpu 1.1) while you can have more up to date (te
 
 After trying to follow https://www.tensorflow.org/install/source and reading a lot of issues on macOS, I was doubting the effort I put in this endavour. 
 
-Seeing someone losing %30 performance was the last nail in the coffin. https://github.com/zylo117/tensorflow-gpu-macosx/issues/1
+Seeing someone losing %30 performance was the last nail on the coffin. https://github.com/zylo117/tensorflow-gpu-macosx/issues/1
 
 Back to CPU only.
 
